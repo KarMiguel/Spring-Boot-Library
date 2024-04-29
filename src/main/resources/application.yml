@@ -1,0 +1,25 @@
+# Serve
+server:
+  port: 8090
+
+
+# Database
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/db_library?useTimezone=true&serverTimezone=UTC
+    username: postgres
+    password: adminpass
+
+  # JPA
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+
+# Configuracao do Springdoc OpenAPI
+springdoc:
+  swagger-ui:
+    use-root-path: true
+  packagesToScan: io.github.karMiguel.library.controllers
+
