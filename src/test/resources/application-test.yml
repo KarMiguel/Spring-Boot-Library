@@ -1,0 +1,25 @@
+#Cors
+cors:
+  originPatterns: http://localhost:3000,http://localhost:8080,http://localhost:4200
+# Serve
+server:
+  port: 8888
+
+# Database
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+
+  # JPA
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+
+# Configuracao do Springdoc OpenAPI
+springdoc:
+  swagger-ui:
+    use-root-path: true
+  packagesToScan: io.github.karMiguel.library.controllers
+
