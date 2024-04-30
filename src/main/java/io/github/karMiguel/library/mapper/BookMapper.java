@@ -1,6 +1,6 @@
 package io.github.karMiguel.library.mapper;
 
-import io.github.karMiguel.library.dtos.BookDto;
+import io.github.karMiguel.library.vo.BookVo;
 import io.github.karMiguel.library.model.Book;
 import org.modelmapper.ModelMapper;
 
@@ -13,12 +13,12 @@ public class BookMapper {
     static {
         mapper.createTypeMap(
                         Book.class,
-                        BookDto.class)
-                .addMapping(Book::getId, BookDto::setKey);
+                        BookVo.class)
+                .addMapping(Book::getId, BookVo::setKey);
         mapper.createTypeMap(
-                        BookDto.class,
+                        BookVo.class,
                         Book.class)
-                .addMapping(BookDto::getKey, Book::setId);
+                .addMapping(BookVo::getKey, Book::setId);
     }
 
     public static <O, D> D parseObject(O origin, Class<D> destination) {

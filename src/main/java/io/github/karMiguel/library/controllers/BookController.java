@@ -1,6 +1,6 @@
 package io.github.karMiguel.library.controllers;
 
-import io.github.karMiguel.library.dtos.BookDto;
+import io.github.karMiguel.library.vo.BookVo;
 import io.github.karMiguel.library.services.BookServices;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -30,7 +30,7 @@ public class BookController {
                             content = {
                                     @Content(
                                             mediaType = "application/json",
-                                            array = @ArraySchema(schema = @Schema(implementation = BookDto.class))
+                                            array = @ArraySchema(schema = @Schema(implementation = BookVo.class))
                                     )
                             }),
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
@@ -39,7 +39,7 @@ public class BookController {
                     @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
             }
     )
-    public List<BookDto> findAll() {
+    public List<BookVo> findAll() {
         return service.findAll();
     }
 
@@ -48,7 +48,7 @@ public class BookController {
             tags = {"Book"},
             responses = {
                     @ApiResponse(description = "Success", responseCode = "200",
-                            content = @Content(schema = @Schema(implementation = BookDto.class))
+                            content = @Content(schema = @Schema(implementation = BookVo.class))
                     ),
                     @ApiResponse(description = "No Content", responseCode = "204", content = @Content),
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
@@ -57,7 +57,7 @@ public class BookController {
                     @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
             }
     )
-    public BookDto findById(@PathVariable(value = "id") Long id) {
+    public BookVo findById(@PathVariable(value = "id") Long id) {
         return service.findById(id);
     }
 
@@ -67,14 +67,14 @@ public class BookController {
             tags = {"Book"},
             responses = {
                     @ApiResponse(description = "Success", responseCode = "200",
-                            content = @Content(schema = @Schema(implementation = BookDto.class))
+                            content = @Content(schema = @Schema(implementation = BookVo.class))
                     ),
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
                     @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
                     @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
             }
     )
-    public BookDto create(@RequestBody BookDto book) {
+    public BookVo create(@RequestBody BookVo book) {
         return service.create(book);
     }
 
@@ -84,7 +84,7 @@ public class BookController {
             tags = {"Book"},
             responses = {
                     @ApiResponse(description = "Updated", responseCode = "200",
-                            content = @Content(schema = @Schema(implementation = BookDto.class))
+                            content = @Content(schema = @Schema(implementation = BookVo.class))
                     ),
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
                     @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
@@ -92,7 +92,7 @@ public class BookController {
                     @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
             }
     )
-    public BookDto update(@RequestBody BookDto book) {
+    public BookVo update(@RequestBody BookVo book) {
         return service.update(book);
     }
 

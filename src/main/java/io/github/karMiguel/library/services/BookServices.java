@@ -1,7 +1,7 @@
 package io.github.karMiguel.library.services;
 
 import io.github.karMiguel.library.controllers.BookController;
-import io.github.karMiguel.library.dtos.BookDto;
+import io.github.karMiguel.library.vo.BookVo;
 import io.github.karMiguel.library.exceptions.RequiredObjectIsNullException;
 import io.github.karMiguel.library.exceptions.ResourceNotFoundException;
 import io.github.karMiguel.library.mapper.BookMapper;
@@ -24,10 +24,10 @@ public class BookServices {
     @Autowired
     BookRepository repository;
 
-    public List<BookDto> findAll() {
+    public List<BookVo> findAll() {
         logger.info("Finding all books!");
 
-        var books = BookMapper.parseListObjects( repository.findAll(), BookDto.class);
+        var books = BookMapper.parseListObjects( repository.findAll(), BookVo.class);
         books
                 .stream()
                 .forEach(p -> p.add(linkTo(methodOn(BookController.class).findById(p.getKey())).withSelfRel()));
@@ -35,29 +35,29 @@ public class BookServices {
 
     }
 
-    public BookDto findById(Long id) {
+    public BookVo findById(Long id) {
         logger.info("Finding one book!");
 
         var entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
-        var vo = BookMapper.parseObject(entity, BookDto.class);
+        var vo = BookMapper.parseObject(entity, BookVo.class);
         vo.add(linkTo(methodOn(BookController.class).findById(id)).withSelfRel());
         return vo;
 
     }
 
-    public BookDto create(BookDto book) {
+    public BookVo create(BookVo book) {
         if (book == null) throw new RequiredObjectIsNullException();
 
         logger.info("Creating one book!");
         var entity = BookMapper.parseObject(book, Book.class);
         var savedEntity = repository.save(entity);
-        var vo = BookMapper.parseObject(savedEntity, BookDto.class);
+        var vo = BookMapper.parseObject(savedEntity, BookVo.class);
         vo.add(linkTo(methodOn(BookController.class).findById(vo.getKey())).withSelfRel());
         return vo;
     }
 
-    public BookDto update(BookDto book) {
+    public BookVo update(BookVo book) {
         if (book == null) throw new RequiredObjectIsNullException();
 
         logger.info("Updating one book!");
@@ -71,7 +71,7 @@ public class BookServices {
         entity.setTitle(book.getTitle());
 
         var updatedEntity = repository.save(entity);
-        var vo = BookMapper.parseObject(updatedEntity, BookDto.class);
+        var vo = BookMapper.parseObject(updatedEntity, BookVo.class);
         vo.add(linkTo(methodOn(BookController.class).findById(vo.getKey())).withSelfRel());
         return vo;
     }

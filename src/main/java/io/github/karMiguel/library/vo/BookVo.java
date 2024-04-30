@@ -1,4 +1,4 @@
-package io.github.karMiguel.library.dtos;
+package io.github.karMiguel.library.vo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -15,7 +15,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookDto extends RepresentationModel<BookDto> {
+public class BookVo extends RepresentationModel<BookVo> {
 
 
     @JsonProperty("id")
