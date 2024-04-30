@@ -1,11 +1,17 @@
-
 #CORS
 cors:
   originPatterns: http://localhost:3000,http://localhost:8080,http://localhost:4200
+
 # Serve
 server:
   port: 8090
 
+#Security
+security:
+  jwt:
+    token:
+      secret-key: 53c37
+      expire-lenght: 360000
 
 # Database
 spring:
