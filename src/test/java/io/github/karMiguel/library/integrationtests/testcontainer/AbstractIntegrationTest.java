@@ -1,4 +1,4 @@
-package io.github.karMiguel.library.integrationtests;
+package io.github.karMiguel.library.integrationtests.testcontainer;
 
 import java.util.Map;
 import java.util.stream.Stream;

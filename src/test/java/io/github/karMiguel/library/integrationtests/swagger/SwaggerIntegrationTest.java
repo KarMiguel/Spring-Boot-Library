@@ -5,7 +5,7 @@ import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
 
 import io.github.karMiguel.library.configs.TestConfigs;
-import io.github.karMiguel.library.integrationtests.AbstractIntegrationTest;
+import io.github.karMiguel.library.integrationtests.testcontainer.AbstractIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
