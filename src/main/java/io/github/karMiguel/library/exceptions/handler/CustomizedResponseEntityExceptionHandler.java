@@ -2,6 +2,7 @@ package io.github.karMiguel.library.exceptions.handler;
 
 
 import io.github.karMiguel.library.exceptions.ExceptionResponse;
+import io.github.karMiguel.library.exceptions.InvalidJwtAuthenticationException;
 import io.github.karMiguel.library.exceptions.RequiredObjectIsNullException;
 import io.github.karMiguel.library.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -54,6 +55,18 @@ public class CustomizedResponseEntityExceptionHandler {
                 request.getDescription(false));
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidJwtAuthenticationException.class)
+    public final ResponseEntity<ExceptionResponse> handleInvalidJwtAuthenticationExceptions(
+            Exception ex, WebRequest request) {
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.FORBIDDEN);
     }
 
 }
