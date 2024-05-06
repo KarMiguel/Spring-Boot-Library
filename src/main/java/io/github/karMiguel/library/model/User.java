@@ -38,6 +38,10 @@ public class User implements UserDetails {
     @Column(name = "account_non_expired")
     private Boolean accountNonExpired;
 
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.COMMOM;
+
     @Column(name = "account_non_locked")
     private Boolean accountNonLocked;
 
@@ -47,24 +51,10 @@ public class User implements UserDetails {
     @Column(name = "enabled")
     private Boolean enabled;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_permission", joinColumns = {@JoinColumn (name = "id_user")},
-            inverseJoinColumns = {@JoinColumn (name = "id_permission")}
-    )
-    private List<Permission> permissions;
-
-
-    public List<String> getRoles() {
-        List<String> roles = new ArrayList<>();
-        for (Permission permission : permissions) {
-            roles.add(permission.getDescription());
-        }
-        return roles;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.permissions;
+        return null;
     }
 
     @Override
@@ -97,74 +87,6 @@ public class User implements UserDetails {
         return this.enabled;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public Boolean getAccountNonExpired() {
-        return accountNonExpired;
-    }
-
-    public void setAccountNonExpired(Boolean accountNonExpired) {
-        this.accountNonExpired = accountNonExpired;
-    }
-
-    public Boolean getAccountNonLocked() {
-        return accountNonLocked;
-    }
-
-    public void setAccountNonLocked(Boolean accountNonLocked) {
-        this.accountNonLocked = accountNonLocked;
-    }
-
-    public Boolean getCredentialsNonExpired() {
-        return credentialsNonExpired;
-    }
-
-    public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
-        this.credentialsNonExpired = credentialsNonExpired;
-    }
-
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public List<Permission> getPermissions() {
-        return permissions;
-    }
-
-    public void setPermissions(List<Permission> permissions) {
-        this.permissions = permissions;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -176,7 +98,6 @@ public class User implements UserDetails {
         result = prime * result + ((fullName == null) ? 0 : fullName.hashCode());
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((password == null) ? 0 : password.hashCode());
-        result = prime * result + ((permissions == null) ? 0 : permissions.hashCode());
         result = prime * result + ((userName == null) ? 0 : userName.hashCode());
         return result;
     }
@@ -224,11 +145,6 @@ public class User implements UserDetails {
             if (other.password != null)
                 return false;
         } else if (!password.equals(other.password))
-            return false;
-        if (permissions == null) {
-            if (other.permissions != null)
-                return false;
-        } else if (!permissions.equals(other.permissions))
             return false;
         if (userName == null) {
             if (other.userName != null)

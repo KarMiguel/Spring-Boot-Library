@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import io.github.karMiguel.library.exceptions.InvalidJwtAuthenticationException;
+import io.github.karMiguel.library.model.Role;
 import io.github.karMiguel.library.vo.TokenVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,7 +45,7 @@ public class JwtTokenProvider {
         algorithm = Algorithm.HMAC256(secretKey.getBytes());
     }
 
-    public TokenVO createAccessToken(String username, List<String> roles) {
+    public TokenVO createAccessToken(String username, Role roles) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
         var accessToken = getAccessToken(username, roles, now, validity);
@@ -61,15 +62,13 @@ public class JwtTokenProvider {
         JWTVerifier verifier = JWT.require(algorithm).build();
         DecodedJWT decodedJWT = verifier.verify(refreshToken);
         String username = decodedJWT.getSubject();
-        List<String> roles = decodedJWT.getClaim("roles").asList(String.class);
-        return createAccessToken(username, roles);
+        return createAccessToken(username, Role.COMMOM);
     }
 
-    private String getAccessToken(String username, List<String> roles, Date now, Date validity) {
+    private String getAccessToken(String username,Role roles, Date now, Date validity) {
         String issuerUrl = ServletUriComponentsBuilder
                 .fromCurrentContextPath().build().toUriString();
         return JWT.create()
-                .withClaim("roles", roles)
                 .withIssuedAt(now)
                 .withExpiresAt(validity)
                 .withSubject(username)
@@ -78,10 +77,9 @@ public class JwtTokenProvider {
                 .strip();
     }
 
-    private String getRefreshToken(String username, List<String> roles, Date now) {
+    private String getRefreshToken(String username, Role roles, Date now) {
         Date validityRefreshToken = new Date(now.getTime() + (validityInMilliseconds * 3));
         return JWT.create()
-                .withClaim("roles", roles)
                 .withIssuedAt(now)
                 .withExpiresAt(validityRefreshToken)
                 .withSubject(username)

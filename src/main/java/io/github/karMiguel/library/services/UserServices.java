@@ -1,39 +1,40 @@
 package io.github.karMiguel.library.services;
 
-
+import io.github.karMiguel.library.exceptions.UsernameUniqueViolationException;
+import io.github.karMiguel.library.model.Role;
+import io.github.karMiguel.library.model.User;
 import io.github.karMiguel.library.repository.UserRepository;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-import java.util.logging.Logger;
-
-
 @Service
-@NoArgsConstructor
-@AllArgsConstructor
-public class UserServices implements UserDetailsService {
+@RequiredArgsConstructor
+public class UserServices {
 
-    private Logger logger = Logger.getLogger(UserServices.class.getName());
+    private final UserRepository repository;
 
-    @Autowired
-    private UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
+    public void save(User user) throws UsernameUniqueViolationException {
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        logger.info("Finding one user by name "+username+"!");
-        var user = repository.findByUsername(username);
-        if (user != null){
-            return  user;
-        }else{
-            throw new UsernameNotFoundException("Username "+username+" not found!");
+        try {
+
+            user.setEnabled(true);
+            user.setAccountNonExpired(true);
+            user.setAccountNonLocked(true);
+            user.setCredentialsNonExpired(true);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            repository.save(user);
+
+        }catch (DataIntegrityViolationException ex){
+            throw new UsernameUniqueViolationException(String.format("Username '%s' ja Cadastrado!",user.getUsername()));
         }
+
     }
+
+
 }
