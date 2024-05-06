@@ -15,7 +15,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookVo extends RepresentationModel<BookVo> {
+public class BookVO extends RepresentationModel<BookVO> {
 
 
     @JsonProperty("id")

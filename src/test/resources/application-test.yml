@@ -17,6 +17,14 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
 
+  #File
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 215MB
+
   # JPA
   jpa:
     open-in-view: false

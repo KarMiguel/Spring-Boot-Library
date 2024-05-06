@@ -6,6 +6,10 @@ cors:
 server:
   port: 8090
 
+#File
+file:
+  upload-dir: src/main/resources/static/img
+
 #Security
 security:
   jwt:
@@ -19,6 +23,14 @@ spring:
     url: jdbc:postgresql://localhost:5432/db_library?useTimezone=true&serverTimezone=UTC
     username: postgres
     password: adminpass
+
+  #Upload e Download
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 215MB
 
   # JPA
   jpa:

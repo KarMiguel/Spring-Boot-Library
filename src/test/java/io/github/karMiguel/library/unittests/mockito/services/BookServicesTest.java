@@ -6,7 +6,7 @@ import static org.mockito.Mockito.when;
 import java.util.List;
 import java.util.Optional;
 
-import io.github.karMiguel.library.vo.BookVo;
+import io.github.karMiguel.library.vo.BookVO;
 import io.github.karMiguel.library.exceptions.RequiredObjectIsNullException;
 import io.github.karMiguel.library.model.Book;
 import io.github.karMiguel.library.repository.BookRepository;
@@ -67,7 +67,7 @@ class BookServicesTest {
 		Book persisted = entity;
 		persisted.setId(1L);
 		
-		BookVo vo = input.mockVO(1);
+		BookVO vo = input.mockVO(1);
 		vo.setKey(1L);
 		
 		when(repository.save(entity)).thenReturn(persisted);
@@ -105,7 +105,7 @@ class BookServicesTest {
 		Book persisted = entity;
 		persisted.setId(1L);
 		
-		BookVo vo = input.mockVO(1);
+		BookVO vo = input.mockVO(1);
 		vo.setKey(1L);
 		
 
@@ -155,7 +155,7 @@ class BookServicesTest {
 		
 		when(repository.findAll()).thenReturn(list);
 		
-		var people = service.findAll();
+		var people = service.findAll(pageable);
 		
 		assertNotNull(people);
 		assertEquals(14, people.size());

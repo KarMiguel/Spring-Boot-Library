@@ -1,6 +1,6 @@
 package io.github.karMiguel.library.unittests.mapper.mocks;
 
-import io.github.karMiguel.library.vo.BookVo;
+import io.github.karMiguel.library.vo.BookVO;
 import io.github.karMiguel.library.model.Book;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ public class MockBook {
         return mockEntity(0);
     }
     
-    public BookVo mockVO() {
+    public BookVO mockVO() {
         return mockVO(0);
     }
     
@@ -27,8 +27,8 @@ public class MockBook {
         return books;
     }
 
-    public List<BookVo> mockVOList() {
-        List<BookVo> books = new ArrayList<>();
+    public List<BookVO> mockVOList() {
+        List<BookVO> books = new ArrayList<>();
         for (int i = 0; i < 14; i++) {
             books.add(mockVO(i));
         }
@@ -45,8 +45,8 @@ public class MockBook {
         return book;
     }
 
-    public BookVo mockVO(Integer number) {
-        BookVo book = new BookVo();
+    public BookVO mockVO(Integer number) {
+        BookVO book = new BookVO();
         book.setKey(number.longValue());
         book.setAuthor("Some Author" + number);
         book.setLaunchDate(new Date());

@@ -6,5 +6,6 @@
   account_non_expired BOOLEAN,
   account_non_locked BOOLEAN,
   credentials_non_expired BOOLEAN,
-  enabled BOOLEAN
+  enabled BOOLEAN,
+  role VARCHAR(50)
 );
