@@ -1,4 +1,4 @@
-# Library
+# SpringBookFileMailer
 
 Este é um projeto de aprendizado abrangente focado em várias funcionalidades essenciais para uma aplicação de biblioteca utilizando Spring Boot.
 
@@ -55,6 +55,7 @@ Para configurar e executar o projeto localmente, siga estas etapas:
 5. Execute `mvn clean install` para compilar o projeto e baixar as dependências.
 6. Execute `mvn spring-boot:run` para iniciar a aplicação.
 7. Acesse a API através do endpoint fornecido pela documentação do Springdoc OpenAPI.
+8. Adicione sua senha do email para poder redefinir senha no site da htpps://myaccount.google.com/apppasswords
 
 ## Documentação das APIs
 - http://localhost:8090/swagger-ui/index.html
