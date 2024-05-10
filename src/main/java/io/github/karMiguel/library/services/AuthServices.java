@@ -1,11 +1,11 @@
 package io.github.karMiguel.library.services;
 
+import io.github.karMiguel.library.model.User;
 import io.github.karMiguel.library.repository.UserRepository;
 import io.github.karMiguel.library.securityJwt.JwtTokenProvider;
 import io.github.karMiguel.library.vo.AccountCredentialsVO;
 import io.github.karMiguel.library.vo.TokenVO;
 import org.springframework.stereotype.Service;
-
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,9 @@ public class AuthServices {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password));
 
-            var user = repository.findByUsername(username);
+            User user = repository.findByUserName(username).orElseThrow(
+                    ()-> new UsernameNotFoundException("Username not found!")
+                    );
 
             var tokenResponse = new TokenVO();
             if (user != null) {
@@ -51,7 +53,7 @@ public class AuthServices {
 
     @SuppressWarnings("rawtypes")
     public ResponseEntity refreshToken(String username, String refreshToken) {
-        var user = repository.findByUsername(username);
+        var user = repository.findByUserName(username);
 
         var tokenResponse = new TokenVO();
         if (user != null) {

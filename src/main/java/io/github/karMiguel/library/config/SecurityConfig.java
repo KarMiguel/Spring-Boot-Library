@@ -58,11 +58,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                     authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers(
-								antMatcher(HttpMethod.POST, "/api/user/v1"),
+								antMatcher("/api/user/v1/**"),
 							antMatcher("/auth/signin"),
 							antMatcher("/auth/refresh/**"),
                     		antMatcher("/swagger-ui/**"),
-                    		antMatcher("/v3/api-docs/**")
+                    		antMatcher("/v3/api-docs/**"),
+								antMatcher("/api/news/top-headlines")
                 		).permitAll()
                         .requestMatchers("/api/**").authenticated()
                         .requestMatchers("/users").denyAll()

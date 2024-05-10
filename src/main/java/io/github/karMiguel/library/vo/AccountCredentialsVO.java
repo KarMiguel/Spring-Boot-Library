@@ -1,7 +1,6 @@
 package io.github.karMiguel.library.vo;
 
-
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +12,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class AccountCredentialsVO {
 
+    @NotBlank(message = "O nome de usuário não pode estar em branco")
     private String username;
-    private String password;
 
+    @NotBlank(message = "A senha não pode estar em branco")
+    private String password;
 }

@@ -1,10 +1,7 @@
 package io.github.karMiguel.library.exceptions.handler;
 
 
-import io.github.karMiguel.library.exceptions.ExceptionResponse;
-import io.github.karMiguel.library.exceptions.InvalidJwtAuthenticationException;
-import io.github.karMiguel.library.exceptions.RequiredObjectIsNullException;
-import io.github.karMiguel.library.exceptions.ResourceNotFoundException;
+import io.github.karMiguel.library.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -67,6 +64,17 @@ public class CustomizedResponseEntityExceptionHandler {
                 request.getDescription(false));
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.FORBIDDEN);
+    }
+    @ExceptionHandler(UsernameUniqueViolationException.class)
+    public final ResponseEntity<ExceptionResponse> handleBUsernameUniqueViolationExceptionExceptions(
+            Exception ex, WebRequest request) {
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
     }
 
 }

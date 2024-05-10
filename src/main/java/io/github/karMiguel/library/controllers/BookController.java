@@ -15,7 +15,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +33,7 @@ public class BookController {
     private BookServices service;
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Finds all Book", description = "Finds all Book",
             tags = {"Book"},
             responses = {
@@ -56,6 +61,7 @@ public class BookController {
     }
 
     @GetMapping("/findByTitle/{title}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('COMMOM')")
     @Operation(summary = "Finds Book by title", description = "Finds all Book",
             tags = {"Book"},
             responses = {
@@ -86,6 +92,7 @@ public class BookController {
 
 
     @GetMapping(value = "/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Finds a Book", description = "Finds a Book",
             tags = {"Book"},
             responses = {
@@ -99,12 +106,23 @@ public class BookController {
                     @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
             }
     )
-    public BookVO findById(@PathVariable(value = "id") Long id) {
-        return service.findById(id);
+    public ResponseEntity<BookVO> findById(@PathVariable(value = "id") Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        BookVO book = service.findById(id);
+        if (book != null) {
+            return ResponseEntity.ok(book);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping
-           @Operation(summary = "Adds a new Book",
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Adds a new Book",
             description = "Adds a new Book by passing in a JSON, XML or YML representation of the book!",
             tags = {"Book"},
             responses = {
@@ -116,12 +134,19 @@ public class BookController {
                     @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
             }
     )
-    public BookVO create(@RequestBody BookVO book) {
-        return service.create(book);
+    public ResponseEntity<BookVO> create(@RequestBody BookVO book) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        BookVO createdBook = service.create(book);
+        return ResponseEntity.ok(createdBook);
     }
 
     @PutMapping
-        @Operation(summary = "Updates a Book",
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Updates a Book",
             description = "Updates a Book by passing in a JSON, XML or YML representation of the book!",
             tags = {"Book"},
             responses = {
@@ -134,11 +159,22 @@ public class BookController {
                     @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
             }
     )
-    public BookVO update(@RequestBody BookVO book) {
-        return service.update(book);
+    public ResponseEntity<BookVO> update(@RequestBody BookVO book) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        BookVO updatedBook = service.update(book);
+        if (updatedBook != null) {
+            return ResponseEntity.ok(updatedBook);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Deletes a Book",
             description = "Deletes a Book by passing in a JSON, XML or YML representation of the book!",
             tags = {"Book"},
@@ -151,6 +187,11 @@ public class BookController {
             }
     )
     public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
         service.delete(id);
         return ResponseEntity.noContent().build();
     }

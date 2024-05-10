@@ -1,7 +1,7 @@
 package io.github.karMiguel.library.vo;
 
-
-import jakarta.persistence.Column;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,11 +9,14 @@ import lombok.Setter;
 @Setter
 public class UserVO {
 
-    public String userName;
+    @NotBlank(message = "O nome de usuário não pode estar em branco")
+    private String userName;
 
-    public String fullName;
+    @NotBlank(message = "O nome completo não pode estar em branco")
+    private String fullName;
 
-    public String password;
-
+    @NotBlank(message = "A senha não pode estar em branco")
+    @Size(min = 6, message = "A senha deve ter pelo menos 6 caracteres")
+    private String password;
 
 }
