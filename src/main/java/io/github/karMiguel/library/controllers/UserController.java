@@ -18,10 +18,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @Tag(name = "User", description = "Endpoints for Managing User")
@@ -47,7 +44,7 @@ public class UserController {
 
 
     @PostMapping("/reset-password")
-    public ResponseEntity<?> resetPassword(String email) throws MessagingException {
+    public ResponseEntity<?> resetPassword(@RequestParam String email) throws MessagingException {
        try {
             User user = userServices.findByUsername(email);
 
@@ -69,7 +66,7 @@ public class UserController {
 
 
     @PostMapping("/reset-password/valid")
-    public ResponseEntity<?> validateResetPassword(UpdatePasswordVO dto) {
+    public ResponseEntity<?> validateResetPassword(@RequestBody @Valid UpdatePasswordVO dto) {
         try {
             if (!ResetPasswordUtil.validateCode(dto.getCode())) {
                 return ResponseEntity.badRequest().body(new ResponseSuccess("Código de redefinição inválido."));
